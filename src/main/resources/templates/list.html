@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" >
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시판 목록보기</title>
+    <link rel="stylesheet" href="board.css" />
+</head>
+<body>
+<section class="board">
+    <div class="page-title">
+        <div class="container">
+            <h3>부부 개발단 - 글 목록보기</h3>
+        </div>
+    </div>
+
+    <div class="login-info">
+        <div class="container">
+          <span class="login-info_user" th:if="${loginInfo != null}">
+            <span th:text="${loginInfo.name}"></span>
+          </span>
+            <span class="login-info_user" th:if="${loginInfo != null}">
+            <span th:text="${'('+role+')'}"></span>
+          </span>
+            <span class="login-info_logout" th:if="${loginInfo != null}">
+            <a href="/logout">로그아웃</a>
+          </span>
+            <span class="login-info_login" th:if="${loginInfo == null}">
+            <a href="/loginForm">로그인</a>
+          </span>
+            <span class="login-info_join" th:if="${loginInfo == null}">
+            <a href="/userRegForm">회원가입</a>
+          </span>
+        </div>
+    </div>
+
+    <!-- board list area -->
+    <div id="board-list">
+        <div class="container">
+            <table class="board-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="th-num">번호</th>
+                    <th scope="col" class="th-title">제목</th>
+                    <th scope="col" class="th-viewcnt">조회수</th>
+                    <th scope="col" class="th-name">작성자</th>
+                    <th scope="col" class="th-date">등록일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${list}">
+                    <td th:text="${board.boardId}"></td>
+                    <th>
+                        <a th:href="@{/board(boardId=${board.boardId},flag=true)}" th:text="${board.title}"></a>
+                    </th>
+                    <td th:text="${board.viewCnt}"></td>
+                    <td th:text="${board.name}"></td>
+                    <td th:text="${board.regdate}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        </br>
+
+        <div style="text-align: right; margin-right: 5%;" >
+                <a href="/writeForm" th:if="${loginInfo != null}" style="background-color: tomato; padding: 0.7%">글쓰기</a>
+                <span th:if="${loginInfo == null}" style="background-color: #e7e7e7; padding: 0.7%">글쓰기</span>
+        </div>
+        </br>
+
+<!--        페이징 코드 -->
+
+        <div style="text-align: center; margin-top: 20px;">
+
+            <!-- 처음 버튼 -->
+            <a th:if="${currentPage > 1}" th:href="@{/(page=${1})}" style="margin-right: 10px;">처음</a>
+
+            <!-- 이전 버튼 -->
+            <a th:if="${currentPage > 1}" th:href="@{/(page=${currentPage - 1})}" style="margin-right: 10px;">이전</a>
+
+            <!-- 페이지 번호 -->
+            <span th:each="n : ${#numbers.sequence(startPage, endPage)}">
+             <a th:href="@{/(page=${n})}" th:classappend="${currentPage == n} ? 'active' : ''" th:text="${n}" style="margin: 0 5px; text-decoration: none;"></a>
+            </span>
+
+            <!-- 다음 버튼 -->
+            <a th:if="${currentPage < pageCount}" th:href="@{/(page=${currentPage + 1})}" style="margin-left: 10px;">다음</a>
+
+            <!-- 마지막 버튼 -->
+            <a th:if="${currentPage < pageCount}" th:href="@{/(page=${totalCount/10+1})}" style="margin-left: 10px;">마지막</a>
+        </div>
+
+
+    </div>
+</section>
+</body>
+</html>
