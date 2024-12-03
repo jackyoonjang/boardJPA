@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
+
     @Query(value = "select b from Board b join fetch b.user") //User의 속성을 이용해서 Join한다.
     List<Board> getBoards();
 
