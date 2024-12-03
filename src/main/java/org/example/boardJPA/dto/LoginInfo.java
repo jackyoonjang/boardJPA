@@ -1,6 +1,5 @@
-package org.example.board.dto;
+package org.example.boardJPA.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

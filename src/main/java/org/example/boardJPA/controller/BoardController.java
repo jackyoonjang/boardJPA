@@ -1,10 +1,10 @@
-package org.example.board.controller;
+package org.example.boardJPA.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.board.dto.Board;
-import org.example.board.dto.LoginInfo;
-import org.example.board.service.BoardService;
+import org.example.boardJPA.domain.Board;
+import org.example.boardJPA.dto.LoginInfo;
+import org.example.boardJPA.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class BoardController {
     // 컨트롤러의 메소드가 리턴하는 문자열은 템플릿 이름이다.
     // http://localhost:8080/ -----> "list"라는 템플릿을 사용(forward)하여 화면에 출력
     @GetMapping("/")
-    public String list(@RequestParam(name = "page", defaultValue = "1") int page, HttpSession session, Model model) { // HttpSession 세션의 값 사용하기, Model 템플릿에 값을 전달하기
+    public String list(@RequestParam(name = "page", defaultValue = "0") int page, HttpSession session, Model model) { // HttpSession 세션의 값 사용하기, Model 템플릿에 값을 전달하기
         LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
         model.addAttribute("loginInfo", loginInfo);
 
@@ -34,9 +34,9 @@ public class BoardController {
             }
         }
 
-        int totalCount = boardService.getTotalCount(); // 총 row 수
+        Long totalCount = boardService.getTotalCount(); // 총 row 수
         List<Board> list = boardService.getBoards(page); // page가 1,2,3,4....
-        int pageCount = totalCount / 10; // 총 페이지 수
+        Long pageCount = totalCount / 10; // 총 페이지 수
         if (totalCount % 10 > 0) { // 나머지가 있을 경우 1page 추가(23 -> 3page, 54 -> 6page)
             pageCount++;
         }
@@ -47,7 +47,7 @@ public class BoardController {
         int startPage = page > 10 ? page/10 *10 : 1;
 
         // 마지막 페이지는 시작 페이지 + 9
-        int endPage = startPage == totalCount/10 - totalCount/10%10 ? startPage + totalCount/10%10 + 1 : startPage + 9;
+        Long endPage = startPage == totalCount/10 - totalCount/10%10 ? startPage + totalCount/10%10 + 1 : startPage + 9;
         // 하지만 시작 페이지가 마지막장의 시작 페이지일 경우
         // 종료페이지는 총 페이지 나누기 10한 나머지가 되어야 한다.
 
@@ -155,7 +155,7 @@ public class BoardController {
             return "redirect:/loginForm";
         }
         Board board = boardService.getBoard(boardId, false);
-        if(board.getUserId() != loginInfo.getUserId()) {
+        if(board.getUser().getUserId() != loginInfo.getUserId()) {
             return "redirect:/board?boardId=" + boardId; // 글보기로 이동한다.
         }
         // 숨겨서 보내준 boardId에 해당하는 글의 제목과 내용을 수정한다.

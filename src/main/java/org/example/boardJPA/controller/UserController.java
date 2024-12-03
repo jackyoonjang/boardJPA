@@ -1,10 +1,10 @@
-package org.example.board.controller;
+package org.example.boardJPA.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.board.dto.LoginInfo;
-import org.example.board.dto.User;
-import org.example.board.service.UserService;
+import org.example.boardJPA.dto.LoginInfo;
+import org.example.boardJPA.domain.User;
+import org.example.boardJPA.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

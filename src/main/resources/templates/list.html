@@ -21,7 +21,7 @@
             <span th:text="${loginInfo.name}"></span>
           </span>
             <span class="login-info_user" th:if="${loginInfo != null}">
-            <span th:text="${'('+role+')'}"></span>
+            <span th:if="${role != null}" th:text="${'('+role+')'}"></span>
           </span>
             <span class="login-info_logout" th:if="${loginInfo != null}">
             <a href="/logout">로그아웃</a>
@@ -55,7 +55,8 @@
                         <a th:href="@{/board(boardId=${board.boardId},flag=true)}" th:text="${board.title}"></a>
                     </th>
                     <td th:text="${board.viewCnt}"></td>
-                    <td th:text="${board.name}"></td>
+<!--                    <td th:text="${board.getUser().getName()}"></td>-->
+                    <td th:text="${board.user.name}"></td>
                     <td th:text="${board.regdate}"></td>
                 </tr>
 

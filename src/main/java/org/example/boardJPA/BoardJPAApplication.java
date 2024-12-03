@@ -1,4 +1,4 @@
-package org.example.board;
+package org.example.boardJPA;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

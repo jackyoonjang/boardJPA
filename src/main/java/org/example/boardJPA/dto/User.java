@@ -1,4 +1,4 @@
-package org.example.board.dto;
+package org.example.boardJPA.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
